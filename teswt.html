@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilha para Vendedor - Fast Line Multimarcas</title>
+    <!-- Carregando Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind para a fonte Inter -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Nova configuração: Usando o logo da Fast Line como plano de fundo da página */
+            background-color: #000; /* Fundo preto sólido para áreas não cobertas/em loading */
+            background-image: url('uploaded:Fast line Multimarcas.webp-5e3b2a75-e52c-44c9-b6a5-a7afea66ecac');
+            background-size: cover; /* Garante que a imagem cubra toda a área */
+            background-position: center; /* Centraliza a imagem */
+            background-repeat: no-repeat; /* Evita repetição */
+            background-attachment: fixed; /* Imagem fica fixa ao rolar, dando profundidade */
+        }
+    </style>
+    <!-- Carregando Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="min-h-screen p-4 sm:p-8 flex items-center justify-center">
+
+    <!-- Container Principal: Alterado para fundo escuro (bg-gray-900) -->
+    <div id="app-container" class="w-full max-w-4xl bg-gray-900 rounded-2xl shadow-xl overflow-hidden p-6 sm:p-10 border border-gray-700">
+
+        <!-- Título e Subtítulo -->
+        <header class="text-center mb-10">
+            <!-- Título em Laranja -->
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-orange-600 mt-6">Trilha para Vendedor</h1>
+            <!-- Subtítulo em cinza claro -->
+            <p class="text-lg sm:text-xl font-medium text-gray-300 mt-2">Fast Line Multimarcas</p>
+            
+            <!-- LOGO (G30) -->
+            <img src="https://raw.githubusercontent.com/mariana-cmyk/G30-/ac78f0f2401561c79ccda1307e9ae61cb7f103b7/G30.jpg"
+                 alt="Logo G30"
+                 class="mx-auto h-36 mt-4 object-contain">
+            <!-- Fim do LOGO -->
+        </header>
+
+        <!-- Container da Trilha (Timeline/Progresso) -->
+        <div id="trilha-container" class="space-y-6">
+            <!-- Módulos da Trilha -->
+        </div>
+
+        <!-- Caixa de Mensagem (Pop-up) - Alterado para fundo escuro -->
+        <div id="message-box" class="fixed inset-0 bg-gray-900 bg-opacity-80 hidden items-center justify-center p-4 z-50">
+            <div class="bg-gray-800 p-6 rounded-xl shadow-2xl max-w-sm w-full text-center border border-orange-500">
+                <p id="message-text" class="text-lg font-semibold text-white mb-4"></p>
+                <button onclick="closeMessage()" class="w-full py-2 px-4 bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition duration-150">
+                    Entendi
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Dados dos módulos de treinamento
+        const modulos = [
+            {
+                titulo: "Fundamentos e Pré-Venda",
+                descricao: "Entenda a base e a preparação essencial para iniciar o processo de vendas.",
+                link: "https://g30educacaoautomotiva.curseduca.pro/m/lessons/g30-class-programa-g30?classId=2387",
+                icon: "book-open"
+            },
+            {
+                titulo: "Investigando o lead: da oferta à venda garantida",
+                descricao: "Aprenda a qualificar e aprofundar a relação com o cliente em potencial.",
+                link: "https://g30educacaoautomotiva.curseduca.pro/m/lessons/vendedor-turbo-programa-g30?classId=2472",
+                icon: "target"
+            },
+            {
+                titulo: "Transformando objeções em oportunidades de venda",
+                descricao: "Domine as técnicas para reverter as dúvidas do cliente em argumentos de fechamento.",
+                link: "https://g30educacaoautomotiva.curseduca.pro/m/lessons/vendedor-turbo-programa-g30?classId=2407",
+                icon: "repeat-2"
+            },
+            {
+                titulo: "Guia básico do Fechamento Presencial e Online",
+                descricao: "Estratégias e roteiros para finalizar a venda com sucesso, em qualquer modalidade.",
+                link: "https://g30educacaoautomotiva.curseduca.pro/m/lessons/vendedor-turbo-programa-g30?classId=2380",
+                icon: "handshake"
+            },
+            {
+                titulo: "Posicionamento digital: usando as redes sociais para captar clientes",
+                descricao: "Utilize o poder das mídias sociais para construir autoridade e gerar novos leads.",
+                link: "https://g30educacaoautomotiva.curseduca.pro/m/lessons/vendedor-turbo-programa-g30?classId=2221",
+                icon: "share-2"
+            }
+        ];
+
+        // Função para exibir a mensagem personalizada (substitui o alert)
+        function showMessage(text) {
+            document.getElementById('message-text').innerText = text;
+            document.getElementById('message-box').classList.remove('hidden');
+            document.getElementById('message-box').classList.add('flex');
+        }
+
+        // Função para fechar a mensagem personalizada
+        function closeMessage() {
+            document.getElementById('message-box').classList.add('hidden');
+            document.getElementById('message-box').classList.remove('flex');
+        }
+
+        // Função para renderizar os módulos
+        function renderModulos() {
+            const container = document.getElementById('trilha-container');
+            container.innerHTML = ''; // Limpa o container antes de adicionar
+
+            modulos.forEach((modulo, index) => {
+                const stepNumber = index + 1;
+                const progressColor = 'bg-orange-500'; 
+                const linkColor = 'text-orange-400 hover:text-orange-500'; // Ajustei o hover para ficar claro no fundo escuro
+
+
+                // HTML do card do módulo
+                const cardHtml = `
+                    <a href="${modulo.link}" target="_blank"
+                       class="flex flex-col sm:flex-row items-start sm:items-center p-4 sm:p-6 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl shadow-md transition duration-300 ease-in-out transform hover:scale-[1.01] group cursor-pointer"
+                       onclick="event.preventDefault(); handleModuloClick(${index})">
+
+                        <!-- Ícone/Número do Passo -->
+                        <div class="flex-shrink-0 flex items-center space-x-4 mb-3 sm:mb-0 sm:mr-6 w-full sm:w-auto">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-full ${progressColor} text-white font-bold text-lg shadow-lg">
+                                ${stepNumber}
+                            </div>
+                            <div class="block sm:hidden flex-grow">
+                                <h3 class="text-lg font-semibold text-white group-hover:${linkColor}">${modulo.titulo}</h3>
+                            </div>
+                        </div>
+
+                        <!-- Conteúdo do Card -->
+                        <div class="flex-grow w-full sm:w-auto">
+                            <h3 class="hidden sm:block text-xl font-semibold text-white group-hover:${linkColor}">${modulo.titulo}</h3>
+                            <p class="text-sm text-gray-400 mt-1">${modulo.descricao}</p>
+                        </div>
+
+                        <!-- Botão/Link de Ação -->
+                        <div class="flex-shrink-0 mt-3 sm:mt-0 sm:ml-6">
+                            <button class="flex items-center text-sm font-medium ${linkColor} transition duration-150">
+                                Acessar Módulo
+                                <i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>
+                            </button>
+                        </div>
+                    </a>
+
+                    <!-- Linha de Conexão (Timeline) - Não aparece no último item -->
+                    ${index < modulos.length - 1 ? `<div class="flex justify-center">
+                        <div class="w-0.5 h-6 ${progressColor} opacity-50"></div>
+                    </div>` : ''}
+                `;
+                container.innerHTML += cardHtml;
+            });
+
+            // Inicializa os ícones do Lucide após a renderização
+            lucide.createIcons();
+        }
+
+        // Função chamada ao clicar no módulo
+        function handleModuloClick(index) {
+            const modulo = modulos[index];
+            // Abre o link em uma nova aba
+            window.open(modulo.link, '_blank');
+
+            // Exibe uma mensagem de feedback
+            showMessage(`Você iniciou o módulo "${modulo.titulo}". Boa jornada!`);
+        }
+
+        // Inicia a renderização quando a página carrega
+        window.onload = function() {
+            renderModulos();
+        };
+    </script>
+</body>
+</html>
